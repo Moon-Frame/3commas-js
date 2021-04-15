@@ -8,6 +8,22 @@ An unofficial 3Commas API wrapper featuring:
 
 Have a look at the official API documentation [here](https://github.com/3commas-io/3commas-official-api-docs).
 
+# Installation
+
+```bash
+npm install 3commas-js
+```
+
+or
+
+```bash
+yarn add 3commas-js
+```
+
+# Using in your project
+
+TODO
+
 # Roadmap
 
 | API          | Overall Typing | Overall progress |
