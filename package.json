@@ -9,7 +9,9 @@
     "build": "tsc",
     "test": "jest ./tests/*.spec.ts --setupFiles dotenv/config"
   },
-  "files": ["dist/**/*"],
+  "files": [
+    "dist/**/*"
+  ],
   "dependencies": {
     "axios": "^0.21.1",
     "crypto-js": "^4.0.0"

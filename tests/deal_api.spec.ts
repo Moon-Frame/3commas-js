@@ -11,7 +11,7 @@ describe('DealApi', () => {
   });
 
   describe('GetDeals', () => {
-    it('should retrieve things from the api', (done) => {
+    fit('should retrieve things from the api', (done) => {
       dealApi.getAll().then((deals) => {
         let totalProfit = 0;
         for (const deal of deals) {
@@ -27,8 +27,8 @@ describe('DealApi', () => {
   });
 
   describe('ShowDeal', () => {
-    fit('should retrieve detail about a deal from the api', (done) => {
-      dealApi.show({ dealId: 123 }).then((dealDetail) => {
+    it('should retrieve detail about a deal from the api', (done) => {
+      dealApi.show(123).then((dealDetail) => {
         // tslint:disable-next-line:no-console
         console.log(dealDetail);
         done();

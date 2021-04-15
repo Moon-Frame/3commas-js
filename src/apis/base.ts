@@ -16,7 +16,7 @@ export interface ThreeCommasConfiguration {
 }
 
 export class ThreeCommasService {
-  constructor(protected configuration: ThreeCommasConfiguration) {}
+  constructor(protected configuration: ThreeCommasConfiguration, protected prefixApiUrl: string) {}
 
   private generateSignature(url: string, reqData: string): string {
     return Crypto.HmacSHA256(url + reqData, this.configuration.apiSecret).toString(Crypto.enc.Hex);
@@ -30,31 +30,21 @@ export class ThreeCommasService {
     method: Method,
     url: string,
     params?: { [key: string]: any },
-    formData?: { [key: string]: any }
+    data?: { [key: string]: any }
   ): Promise<T> {
     const urlSearchParams = new URLSearchParams();
-    console.log(params);
     for (let [key, value] of toPairs(params)) {
       urlSearchParams.append(this.convertKeyToSnakeCase(key), value);
     }
-    const sig = this.generateSignature(url, urlSearchParams.toString());
+    const fullUrl = `${this.prefixApiUrl}${url}`;
+    const sig = this.generateSignature(fullUrl, urlSearchParams.toString());
     const axiosRequestConfig: AxiosRequestConfig = {
-      url,
+      url: fullUrl,
       method,
+      data: data ? data : undefined,
       params: urlSearchParams,
       headers: { APIKEY: this.configuration.apiKey, Signature: sig },
     };
-    if (formData) {
-      const bodyFormData = new FormData();
-      for (let [key, value] of toPairs(formData)) {
-        bodyFormData.append(key, value);
-      }
-      axiosRequestConfig.data = bodyFormData;
-      axiosRequestConfig.headers = {
-        ...axiosRequestConfig.headers,
-        'Content-Type': 'multipart/form-data',
-      };
-    }
     try {
       let response = await instance.request<T>(axiosRequestConfig);
       return response.data;
